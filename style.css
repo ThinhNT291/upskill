@@ -1,0 +1,292 @@
+:root {
+    --bg-color: #f4f7f6;
+    --panel-bg: #ffffff;
+    --primary-color: #4a90e2;
+    --record-color: #e74c3c;
+    --text-color: #333333;
+    --border-color: #e0e0e0;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* =========================================
+   BỐ CỤC DESKTOP (Mặc định)
+========================================= */
+.app-container {
+    display: grid;
+    grid-template-columns: 250px 1fr 300px;
+    gap: 20px;
+    padding: 20px;
+    height: 100vh;
+}
+
+.sidebar-left, .main-content, .sidebar-right {
+    background-color: var(--panel-bg);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    overflow-y: auto;
+    transition: all 0.3s ease;
+}
+
+/* Nút Thu/Phóng Cột (Desktop) */
+.toggle-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    z-index: 10;
+    transition: background 0.3s;
+}
+
+.toggle-btn:hover {
+    background-color: #2c3e50;
+}
+
+.sidebar-left.collapsed, .sidebar-right.collapsed { 
+    width: 65px; 
+    padding: 20px 10px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.collapsed .sidebar-content { display: none; }
+.collapsed .toggle-btn i { transform: rotate(180deg); }
+
+/* =========================================
+   THÀNH PHẦN BÊN TRONG
+========================================= */
+h2, h3 { margin-bottom: 15px; color: #2c3e50; }
+.setting-group { margin-bottom: 15px; }
+.setting-group label { display: block; margin-bottom: 5px; font-weight: 500; }
+.setting-group select, .setting-group input { width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; outline: none; }
+
+.btn { padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.primary-btn { background-color: var(--primary-color); color: white; width: 100%; }
+.record-btn { background-color: var(--record-color); color: white; }
+.stop-btn { background-color: #7f8c8d; color: white; }
+.btn-save { background-color: #27ae60; color: white; padding: 8px 15px; font-size: 14px; border-radius: 6px; }
+.btn-save:hover { background-color: #219a52; }
+
+.controls-section { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
+.content-box { background-color: #fafbfc; border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; min-height: 100px; margin-bottom: 20px; line-height: 1.6; }
+.placeholder-text { color: #95a5a6; font-style: italic; }
+.hidden { display: none !important; }
+
+/* Lịch sử */
+#history-list { list-style: none; }
+.history-item { position: relative; padding: 15px 10px; border-bottom: 1px solid var(--border-color); }
+.history-title { font-weight: bold; font-size: 14px; margin-bottom: 5px; width: 85%; display: inline-block; word-wrap: break-word;}
+.history-actions { position: absolute; right: 10px; top: 15px; cursor: pointer; color: #7f8c8d; padding: 5px; }
+.action-menu { display: none; position: absolute; right: 0; top: 35px; background: white; border: 1px solid #ccc; box-shadow: 0 2px 5px rgba(0,0,0,0.2); border-radius: 4px; z-index: 10; min-width: 120px; }
+.action-menu button { display: block; width: 100%; text-align: left; padding: 10px 12px; background: none; border: none; cursor: pointer; font-size: 14px; }
+.action-menu button:hover { background: #f1f2f6; }
+.empty-history { color: #95a5a6; font-style: italic; border: none; text-align: center; }
+
+/* Các nút gọi menu Mobile (Ẩn hoàn toàn vì ta dùng cuộn dọc) */
+.mobile-toggle { display: none !important; }
+
+/* =========================================
+   BỐ CỤC MOBILE (Dưới 768px) - Dàn hàng dọc
+========================================= */
+@media (max-width: 768px) {
+    body {
+        height: auto; /* Cho phép cuộn trang tự nhiên */
+        overflow: auto;
+    }
+    
+    .app-container {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        padding: 10px;
+        gap: 15px;
+    }
+
+    .sidebar-left, .main-content, .sidebar-right {
+        width: 100%;
+        height: auto;
+        overflow: visible; /* Không cuộn bên trong từng khung nữa */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .toggle-btn {
+        display: none; /* Ẩn nút thu gọn vì mobile đã dàn dọc rồi */
+    }
+}
+
+
+/* --- GIAO DIỆN WRITING --- */
+.workspace {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#writing-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
+}
+
+.word-count-warning {
+    color: #e74c3c !important;
+}
+
+.word-count-good {
+    color: #27ae60 !important;
+}
+
+/* Tooltip cho lỗi Writing (Sẽ dùng trong JS sau) */
+.error-highlight {
+    background-color: #ffcccc;
+    border-bottom: 2px dashed #e74c3c;
+    cursor: pointer;
+    position: relative;
+}
+
+.error-highlight:hover::after {
+    content: attr(data-correction);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2c3e50;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 100;
+}
+
+/* --- GIAO DIỆN POPUP (MODAL) HINTS --- */
+.modal {
+    position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(3px); /* Làm mờ nền */
+}
+
+.modal.hidden { display: none !important; }
+
+.modal-content {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    /*animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-btn {
+    position: absolute; right: 20px; top: 20px;
+    font-size: 28px; font-weight: bold; color: #7f8c8d; cursor: pointer;
+}
+.close-btn:hover { color: #e74c3c; }
+
+.hint-section { margin-bottom: 20px; }
+.hint-section h4 { color: #2980b9; margin-bottom: 8px; }
+.hint-list { padding-left: 20px; font-size: 0.95em; }
+.hint-pill { display: inline-block; background: #e8f4f8; padding: 4px 10px; border-radius: 20px; margin: 3px; font-size: 0.9em; border: 1px solid #b3d4fc;}
+
+/* --- GIAO DIỆN GRID NGÂN HÀNG ĐỀ --- */
+.question-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.q-btn {
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 15px 10px;
+    color: #2980b9;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.q-btn:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(74, 144, 226, 0.2);
+}
+
+.q-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 6px 12px rgba(74, 144, 226, 0.4);
+}
+/* --- TỔNG THỂ: THU NHỎ FONT CHỮ --- */
+body { font-size: 15px; }
+h2 { font-size: 1.3em; }
+h3 { font-size: 1.15em; }
+h4 { font-size: 1.05em; }
+.btn { font-size: 13.5px; padding: 8px 12px; }
+
+/* --- GIỮ NGUYÊN ĐỊNH DẠNG ĐỀ BÀI (XUỐNG DÒNG, DẤU CÁCH) --- */
+.preserve-format {
+    white-space: pre-wrap; /* Quan trọng: Giữ lại mọi dấu Enter từ Google Sheets */
+    font-size: 1.05em;
+    line-height: 1.6;
+    color: #2c3e50;
+    background: #fff;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #eee;
+}
+
+/* --- CUSTOM UPLOAD BUTTON --- */
+.custom-file-upload {
+    display: block;
+    background: #bdc3c7;
+    color: #2c3e50;
+    text-align: center;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 5px;
+    transition: 0.2s;
+}
+.custom-file-upload:hover { background: #95a5a6; color: white; }
+#image-file-name { font-size: 0.85em; color: #27ae60; text-align: center; font-style: italic; margin-bottom: 10px; }
